@@ -2,7 +2,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RestaurantTest {
@@ -35,9 +38,9 @@ class RestaurantTest {
 
     @Test
     public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time(){
-        restaurant = new Restaurant("Five Guys","Delta",
-                LocalTime.of(10,0),
-                LocalTime.of(20, 0));
+        restaurant = new Restaurant("Old Spaghetti Factory","Vancouver",
+                LocalTime.of(11,0),
+                LocalTime.of(21, 0));
 
         Restaurant mockedRestaurant = Mockito.spy(restaurant);
 
@@ -45,7 +48,6 @@ class RestaurantTest {
                 .thenReturn(LocalTime.of(22,0));
 
         assertFalse(mockedRestaurant.isRestaurantOpen());
-
     }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<OPEN/CLOSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -70,4 +72,27 @@ class RestaurantTest {
                 ()->restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>> TDD <<<<<<<<<<<<<<<<<<<<<<<<<<
+    @Test
+    public void getTotalOrder_called_with_no_selected_items_should_return_zero() {
+        ArrayList<String> selectedItems = new ArrayList<String>();
+        int total = restaurant.getTotalOrder(selectedItems);
+
+        assertThat(total, equalTo(0));
+    }
+
+    @Test
+    public void getTotalOrder_called_with_some_selected_items_should_return_total() {
+        ArrayList <String> selectedItems = new ArrayList<String>();
+
+        selectedItems.add("Sweet corn soup");
+        selectedItems.add("Vegetable lasagne");
+
+        int total = restaurant.getTotalOrder(selectedItems);
+
+        assertThat(total, equalTo(388));
+    }
+    // <<<<<<<<<<<<<<<<<<<<<<<<<< TDD >>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
