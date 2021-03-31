@@ -6,8 +6,14 @@ public class RestaurantService {
     private static List<Restaurant> restaurants = new ArrayList<>();
 
     public Restaurant findRestaurantByName(String restaurantName){
-        return null;
-        //DELETE ABOVE STATEMENT AND WRITE CODE HERE
+        Restaurant restaurant = null;
+        for (int i=0; i<restaurants.size();i++) {
+            restaurant = restaurants.get(i);
+            if (restaurant.getName().equals(restaurantName)) {
+                return restaurant;
+            }
+        }
+        throw new RestaurantNotFoundException("Restaurant could not be found");
     }
 
 
@@ -17,7 +23,7 @@ public class RestaurantService {
         return newRestaurant;
     }
 
-    public Restaurant removeRestaurant(String restaurantName) throws restaurantNotFoundException {
+    public Restaurant removeRestaurant(String restaurantName) throws RestaurantNotFoundException {
         Restaurant restaurantToBeRemoved = findRestaurantByName(restaurantName);
         restaurants.remove(restaurantToBeRemoved);
         return restaurantToBeRemoved;
